@@ -87,6 +87,12 @@ case "$(printf "%s\n" "$(readlink -f "$1")" | awk '{print tolower($0)}')" in
 	*.ino)
 		batorcat --language=cpp "$1"
 		;;
+	*.sample|*.example)
+		cache="${CACHE}$(echo "$1" | grep -Po '\..*(?=\.\w+?)')"
+		[ ! -f "$cache" ] && \
+			cp "$1" "$cache"
+		batorcat "$cache"
+		;;
 	*)
 		batorcat "$1"
 		;;
